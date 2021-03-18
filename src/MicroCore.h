@@ -2,15 +2,15 @@
 // Created by mwo on 5/11/15.
 //
 
-#ifndef XMREG01_MICROCORE_H
-#define XMREG01_MICROCORE_H
+#ifndef XLAEG01_MICROCORE_H
+#define XLAEG01_MICROCORE_H
 
 #include <iostream>
 
-#include "monero_headers.h"
+#include "scala_headers.h"
 #include "tools.h"
 
-namespace xmreg
+namespace xlaeg
 {
     using namespace cryptonote;
     using namespace crypto;
@@ -90,4 +90,4 @@ namespace xmreg
 
 
 
-#endif //XMREG01_MICROCORE_H
+#endif //XLAEG01_MICROCORE_H

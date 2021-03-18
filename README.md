@@ -1,6 +1,6 @@
-# Onion Monero Blockchain Explorer
+# Onion Scala Blockchain Explorer
 
-Currently available Monero blockchain explorers have several limitations which are of
+Currently available Scala blockchain explorers have several limitations which are of
 special importance to privacy-oriented users:
 
  - they use JavaScript,
@@ -8,13 +8,13 @@ special importance to privacy-oriented users:
  - track users activates through google analytics,
  - are closed sourced,
  - are not available as hidden services,
- - do not support Monero testnet nor stagenet networks,
+ - do not support Scala testnet nor stagenet networks,
  - have limited JSON API.
 
 
 In this example, these limitations are addressed by development of
-an Onion Monero Blockchain Explorer. The example not only shows how to use
-Monero C++ libraries, but also demonstrates how to use:
+an Onion Scala Blockchain Explorer. The example not only shows how to use
+Scala C++ libraries, but also demonstrates how to use:
 
  - [crow](https://github.com/ipkn/crow) - C++ micro web framework
  - [mstch](https://github.com/no1msd/mstch) - C++ {{mustache}} templates
@@ -24,37 +24,37 @@ Monero C++ libraries, but also demonstrates how to use:
 ## Explorer hosts
 
 Clearnet versions:
- - [https://xmrchain.net/](https://xmrchain.net/) - https enabled, most popular and very stable.
- - [https://monerohash.com/explorer/](https://monerohash.com/explorer/) - nice looking one, https enabled.
- - [http://monerochain.com/](http://monerochain.com/) - JSON API based, multiple nodes.   
- - [https://blox.minexmr.com/](https://blox.minexmr.com/) - - https enabled.
- - [https://community.xmr.to/explorer/mainnet/](https://community.xmr.to/explorer/mainnet/)
+ - [https://xlachain.net/](https://xlachain.net/) - https enabled, most popular and very stable.
+ - [https://scalahash.com/explorer/](https://scalahash.com/explorer/) - nice looking one, https enabled.
+ - [http://scalachain.com/](http://scalachain.com/) - JSON API based, multiple nodes.   
+ - [https://blox.minexla.com/](https://blox.minexla.com/) - - https enabled.
+ - [https://community.xla.to/explorer/mainnet/](https://community.xla.to/explorer/mainnet/)
 
 Testnet version:
 
- - [https://testnet.xmrchain.com/](https://testnet.xmrchain.com/) - https enabled.
- - [https://community.xmr.to/explorer/testnet/](https://community.xmr.to/explorer/testnet/)
+ - [https://testnet.xlachain.com/](https://testnet.xlachain.com/) - https enabled.
+ - [https://community.xla.to/explorer/testnet/](https://community.xla.to/explorer/testnet/)
 
 Stagenet version:
  
- - [https://stagenet.xmrchain.net/](https://stagenet.xmrchain.net/)
- - [https://monero-stagenet.exan.tech/](https://monero-stagenet.exan.tech/)
+ - [https://stagenet.xlachain.net/](https://stagenet.xlachain.net/)
+ - [https://scala-stagenet.exan.tech/](https://scala-stagenet.exan.tech/)
  - [http://162.210.173.150:8083/](http://162.210.173.150:8083/)
- - [https://community.xmr.to/explorer/stagenet/](https://community.xmr.to/explorer/stagenet/)
+ - [https://community.xla.to/explorer/stagenet/](https://community.xla.to/explorer/stagenet/)
 
-i2p users (main Monero network):
+i2p users (main Scala network):
 
  - [http://7o4gezpkye6ekibhgpkg7v626ze4idsirapufzrefkdysa6zxhha.b32.i2p/](http://7o4gezpkye6ekibhgpkg7v626ze4idsirapufzrefkdysa6zxhha.b32.i2p/)
 
 Alternative block explorers:
 
-- [http://moneroblocks.info](http://moneroblocks.info/)
-- [https://monerovision.com](https://monerovision.com)
+- [http://scalablocks.info](http://scalablocks.info/)
+- [https://scalavision.com](https://scalavision.com)
 
 
-## Onion Monero Blockchain Explorer features
+## Onion Scala Blockchain Explorer features
 
-The key features of the Onion Monero Blockchain Explorer are:
+The key features of the Onion Scala Blockchain Explorer are:
 
  - no cookies, no web analytics trackers, no images,
  - open sourced,
@@ -62,12 +62,12 @@ The key features of the Onion Monero Blockchain Explorer are:
  - showing encrypted payments ID,
  - showing ring signatures,
  - showing transaction extra field,
- - showing public components of Monero addresses,
- - decoding which outputs and mixins belong to the given Monero address and viewkey,
- - can prove that you send Monero to someone,
+ - showing public components of Scala addresses,
+ - decoding which outputs and mixins belong to the given Scala address and viewkey,
+ - can prove that you send Scala to someone,
  - detailed information about ring members, such as, their age, timescale and their ring sizes,
  - showing number of amount output indices,
- - support Monero testnet and stagnet networks,
+ - support Scala testnet and stagnet networks,
  - tx checker and pusher for online pushing of transactions,
  - estimate possible spendings based on address and viewkey,
  - can provide total amount of all miner fees,
@@ -80,34 +80,34 @@ The key features of the Onion Monero Blockchain Explorer are:
 
 Current development branch:
 
- - https://github.com/moneroexamples/onion-monero-blockchain-explorer/tree/devel
+ - https://github.com/scalaexamples/onion-scala-blockchain-explorer/tree/devel
 
-Note: `devel` branch of the explorer follows `master` branch of the monero!
+Note: `devel` branch of the explorer follows `master` branch of the scala!
 
 ## Compilation on Ubuntu 18.04/20.04
 
 
-#### Monero download and compilation
+#### Scala download and compilation
 
-To download and compile recent Monero follow instructions
+To download and compile recent Scala follow instructions
 in the following link:
 
-https://github.com/moneroexamples/monero-compilation/blob/master/README.md
+https://github.com/scalaexamples/scala-compilation/blob/master/README.md
 
 ##### Compile and run the explorer
 
-Once the Monero compiles, the explorer can be downloaded and compiled
+Once the Scala compiles, the explorer can be downloaded and compiled
 as follows:
 
 ```bash
-# go to home folder if still in ~/monero
+# go to home folder if still in ~/scala
 cd ~
 
 # download the source code 
-git clone https://github.com/moneroexamples/onion-monero-blockchain-explorer.git
+git clone https://github.com/scalaexamples/onion-scala-blockchain-explorer.git
 
 # enter the downloaded sourced code folder
-cd onion-monero-blockchain-explorer
+cd onion-scala-blockchain-explorer
 
 # make a build folder and enter it
 mkdir build && cd build
@@ -122,22 +122,22 @@ make
 
 To run it:
 ```
-./xmrblocks
+./xlablocks
 ```
 
-By default it will look for blockchain in its default location i.e., `~/.bitmonero/lmdb`.
+By default it will look for blockchain in its default location i.e., `~/.bitscala/lmdb`.
 You can use `-b` option if its in different location.
 
 For example:
 
 ```bash
-./xmrblocks -b /home/mwo/non-defult-monero-location/lmdb/
+./xlablocks -b /home/mwo/non-defult-scala-location/lmdb/
 ```
 
 Example output:
 
 ```bash
-[mwo@arch onion-monero-blockchain-explorer]$ ./xmrblocks
+[mwo@arch onion-scala-blockchain-explorer]$ ./xlablocks
 2016-May-28 10:04:49.160280 Blockchain initialized. last block: 1056761, d0.h0.m12.s47 time ago, current difficulty: 1517857750
 (2016-05-28 02:04:49) [INFO    ] Crow/0.1 server is running, local port 8081
 ```
@@ -147,7 +147,7 @@ Go to your browser: http://127.0.0.1:8081
 ## The explorer's command line options
 
 ```
-xmrblocks, Onion Monero Blockchain Explorer:
+xlablocks, Onion Scala Blockchain Explorer:
   -h [ --help ] [=arg(=1)] (=0)         produce help message
   -t [ --testnet ] [=arg(=1)] (=0)      use testnet blockchain
   -s [ --stagenet ] [=arg(=1)] (=0)     use stagenet blockchain
@@ -168,7 +168,7 @@ xmrblocks, Onion Monero Blockchain Explorer:
                                         enable users to have the index page on
                                         autorefresh
   --enable-emission-monitor [=arg(=1)] (=0)
-                                        enable Monero total emission monitoring
+                                        enable Scala total emission monitoring
                                         thread
   -p [ --port ] arg (=8081)             default explorer port
   -x [ --bindaddr ] arg (=0.0.0.0)      default bind address for the explorer
@@ -191,13 +191,13 @@ xmrblocks, Onion Monero Blockchain Explorer:
                                         queries. Default is 0 which means it is
                                         based you on the cpu
   -b [ --bc-path ] arg                  path to lmdb folder of the blockchain,
-                                        e.g., ~/.bitmonero/lmdb
+                                        e.g., ~/.bitscala/lmdb
   --ssl-crt-file arg                    path to crt file for ssl (https)
                                         functionality
   --ssl-key-file arg                    path to key file for ssl (https)
                                         functionality
   -d [ --deamon-url ] arg (=http:://127.0.0.1:18081)
-                                        Monero daemon url
+                                        Scala daemon url
   --daemon-login arg                    Specify username[:password] for daemon 
                                         RPC client
 ```
@@ -206,30 +206,30 @@ Example usage, defined as bash aliases.
 
 ```bash
 # for mainnet explorer
-alias xmrblocksmainnet='~/onion-monero-blockchain-explorer/build/xmrblocks    --port 8081 --testnet-url "http://139.162.32.245:8082" --enable-pusher --enable-emission-monitor'
+alias xlablocksmainnet='~/onion-scala-blockchain-explorer/build/xlablocks    --port 8081 --testnet-url "http://139.162.32.245:8082" --enable-pusher --enable-emission-monitor'
 
 # for testnet explorer
-alias xmrblockstestnet='~/onion-monero-blockchain-explorer/build/xmrblocks -t --port 8082 --mainnet-url "http://139.162.32.245:8081" --enable-pusher --enable-emission-monitor'
+alias xlablockstestnet='~/onion-scala-blockchain-explorer/build/xlablocks -t --port 8082 --mainnet-url "http://139.162.32.245:8081" --enable-pusher --enable-emission-monitor'
 ```
 
-## Enable Monero emission
+## Enable Scala emission
 
-Obtaining current Monero emission amount is not straight forward. Thus, by default it is
+Obtaining current Scala emission amount is not straight forward. Thus, by default it is
 disabled. To enable it use `--enable-emission-monitor` flag, e.g.,
 
 
 ```bash
-xmrblocks --enable-emission-monitor
+xlablocks --enable-emission-monitor
 ```
 
 This flag will enable emission monitoring thread. When started, the thread
  will initially scan the entire blockchain, and calculate the cumulative emission based on each block.
 Since it is a separate thread, the explorer will work as usual during this time.
 Every 10000 blocks, the thread will save current emission in a file, by default,
- in `~/.bitmonero/lmdb/emission_amount.txt`. For testnet or stagenet networks,
- it is `~/.bitmonero/testnet/lmdb/emission_amount.txt` or `~/.bitmonero/stagenet/lmdb/emission_amount.txt`. This file is used so that we don't
+ in `~/.bitscala/lmdb/emission_amount.txt`. For testnet or stagenet networks,
+ it is `~/.bitscala/testnet/lmdb/emission_amount.txt` or `~/.bitscala/stagenet/lmdb/emission_amount.txt`. This file is used so that we don't
  need to rescan entire blockchain whenever the explorer is restarted. When the
- explorer restarts, the thread will first check if `~/.bitmonero/lmdb/emission_amount.txt`
+ explorer restarts, the thread will first check if `~/.bitscala/lmdb/emission_amount.txt`
  is present, read its values, and continue from there if possible. Subsequently, only the initial
  use of the tread is time consuming. Once the thread scans the entire blockchain, it updates
  the emission amount using new blocks as they come. Since the explorer writes this file, there can
@@ -243,10 +243,10 @@ Every 10000 blocks, the thread will save current emission in a file, by default,
  displayed on the front page, e.g., :
 
 ```
-Monero emission (fees) is 14485540.430 (52545.373) as of 1313448 block
+Scala emission (fees) is 14485540.430 (52545.373) as of 1313448 block
 ```
 
-The values given, can be checked using Monero daemon's  `print_coinbase_tx_sum` command.
+The values given, can be checked using Scala daemon's  `print_coinbase_tx_sum` command.
 For example, for the above example: `print_coinbase_tx_sum 0 1313449`.
 
 To disable the monitor, simply restart the explorer without `--enable-emission-monitor` flag.
@@ -264,10 +264,10 @@ openssl req -new -key server.key -out server.csr
 openssl x509 -req -days 3650 -in server.csr -signkey server.key -out server.crt
 ```
 
-Having the `crt` and `key` files, run `xmrblocks` in the following way:
+Having the `crt` and `key` files, run `xlablocks` in the following way:
 
 ```bash
-./xmrblocks --ssl-crt-file=/tmp/server.crt --ssl-key-file=/tmp/server.key
+./xlablocks --ssl-crt-file=/tmp/server.crt --ssl-key-file=/tmp/server.key
 ```
 
 Note: Because we generated our own certificate, modern browsers will complain
@@ -280,7 +280,7 @@ The explorer has JSON api. For the API, it uses conventions defined by [JSend](h
 By default the api is disabled. To enable it, use `--enable-json-api` flag, e.g.,
 
 ```
-./xmrblocks --enable-json-api
+./xlablocks --enable-json-api
 ```
 
 #### api/transaction/<tx_hash>
@@ -335,8 +335,8 @@ Partial results shown:
     "tx_hash": "6093260dbe79fd6277694d14789dc8718f1bd54457df8bab338c2efa3bb0f03d",
     "tx_size": 13323,
     "tx_version": 2,
-    "xmr_inputs": 0,
-    "xmr_outputs": 0
+    "xla_inputs": 0,
+    "xla_outputs": 0
   },
   "status": "success"
 }
@@ -434,8 +434,8 @@ Partial results shown:
         "tx_hash": "3ff71b65bec34c9261e01a856e6a03594cf0472acf6b77db3f17ebd18eaa30bf",
         "tx_size": 95,
         "tx_version": 2,
-        "xmr_inputs": 0,
-        "xmr_outputs": 8025365394426
+        "xla_inputs": 0,
+        "xla_outputs": 8025365394426
       }
     ]
   },
@@ -473,8 +473,8 @@ Partial results shown:
         "tx_hash": "9f3374f8ac67febaab153eab297937a3d0d2c706601e496bf5028146da0c9aef",
         "tx_size": 13291,
         "tx_version": 2,
-        "xmr_inputs": 0,
-        "xmr_outputs": 0
+        "xla_inputs": 0,
+        "xla_outputs": 0
       }
     ],
     "txs_no": 7
@@ -526,8 +526,8 @@ Partial results shown:
         "tx_hash": "479ba432f5c88736b438dd4446a11a13046a752d469f7828151f5c5b86be4e9a",
         "tx_size": 95,
         "tx_version": 2,
-        "xmr_inputs": 0,
-        "xmr_outputs": 7992697599717
+        "xla_inputs": 0,
+        "xla_outputs": 7992697599717
       }
     ]
   },
@@ -546,7 +546,7 @@ For this, we use recipient's address and our tx private key as a viewkey value,
 Checking outputs:
 
 ```bash
-# we use here official Monero project's donation address as an example
+# we use here official Scala project's donation address as an example
 curl  -w "\n" -X GET "http://127.0.0.1:8081/api/outputs?txhash=17049bc5f2d9fbca1ce8dae443bbbbed2fc02f1ee003ffdd0571996905faa831&address=44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A&viewkey=f359631075708155cc3d92a32b75a7d02a5dcf27756707b47a2b31b21c389501&txprove=0"
 ```
 
@@ -578,7 +578,7 @@ curl  -w "\n" -X GET "http://127.0.0.1:8081/api/outputs?txhash=17049bc5f2d9fbca1
 
 Proving transfer:
 
-We use recipient's address (i.e. not our address from which we sent xmr to recipient).
+We use recipient's address (i.e. not our address from which we sent xla to recipient).
 For the viewkey, we use `tx_private_key` (although the GET variable is still called `viewkey`) that we obtained by sending this txs.
 
 ```bash
@@ -732,10 +732,10 @@ curl  -w "\n" -X GET "http://127.0.0.1:8081/api/version"
   "data": {
     "api": 65536,
     "blockchain_height": 1357031,
-    "git_branch_name": "update_to_current_monero",
+    "git_branch_name": "update_to_current_scala",
     "last_git_commit_date": "2017-07-25",
     "last_git_commit_hash": "a549f25",
-    "monero_version_full": "0.10.3.1-ab594cfe"
+    "scala_version_full": "0.10.3.1-ab594cfe"
   },
   "status": "success"
 }
@@ -752,7 +752,7 @@ var api_minor = response.data.api & 0xffff;
 
 #### api/rawblock/<block_number|block_hash>
 
-Return raw json block data, as represented in Monero.
+Return raw json block data, as represented in Scala.
 
 ```bash
 curl  -w "\n" -X GET "http://139.162.32.245:8081/api/rawblock/1293257"
@@ -762,7 +762,7 @@ Example result not shown.
 
 #### api/rawtransaction/<tx_hash>
 
-Return raw json tx data, as represented in Monero.
+Return raw json tx data, as represented in Scala.
 
 ```bash
 curl  -w "\n" -X GET "http://139.162.32.245:8081/api/rawtransaction/6093260dbe79fd6277694d14789dc8718f1bd54457df8bab338c2efa3bb0f03d"
@@ -770,9 +770,9 @@ curl  -w "\n" -X GET "http://139.162.32.245:8081/api/rawtransaction/6093260dbe79
 
 Example result not shown.
 
-## Other monero examples
+## Other scala examples
 
-Other examples can be found on  [github](https://github.com/moneroexamples?tab=repositories).
+Other examples can be found on  [github](https://github.com/scalaexamples?tab=repositories).
 Please know that some of the examples/repositories are not
 finished and may not work as intended.
 

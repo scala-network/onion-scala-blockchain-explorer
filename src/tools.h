@@ -2,12 +2,12 @@
 // Created by mwo on 5/11/15.
 //
 
-#ifndef XMREG01_TOOLS_H
-#define XMREG01_TOOLS_H
+#ifndef XLAEG01_TOOLS_H
+#define XLAEG01_TOOLS_H
 
 #define PATH_SEPARARTOR '/'
 
-#define XMR_AMOUNT(value) \
+#define XLA_AMOUNT(value) \
     static_cast<double>(value) / 1e12
 
 #define REMOVE_HASH_BRAKETS(a_hash) \
@@ -15,7 +15,7 @@
 
 
 
-#include "monero_headers.h"
+#include "scala_headers.h"
 
 #include "../ext/fmt/ostream.h"
 #include "../ext/fmt/format.h"
@@ -38,7 +38,7 @@
  * Names are rather self-explanatory, so I think
  * there is no reason for any detailed explanations here
  */
-namespace xmreg
+namespace xlaeg
 {
 
 using namespace cryptonote;
@@ -222,7 +222,7 @@ get_payment_id(const transaction& tx,
 
 
 inline double
-get_xmr(uint64_t core_amount)
+get_xla(uint64_t core_amount)
 {
     return  static_cast<double>(core_amount) / 1e12;
 }
@@ -273,7 +273,7 @@ get_tx_pub_key_from_received_outs(const transaction &tx);
 
 static
 string
-xmr_amount_to_str(const uint64_t& xmr_amount,
+xla_amount_to_str(const uint64_t& xla_amount,
                   string _format="{:0.12f}",
                   bool zero_to_question_mark=true)
 {
@@ -281,13 +281,13 @@ xmr_amount_to_str(const uint64_t& xmr_amount,
 
     if (!zero_to_question_mark)
     {
-        amount_str = fmt::format(_format, XMR_AMOUNT(xmr_amount));
+        amount_str = fmt::format(_format, XLA_AMOUNT(xla_amount));
     }
     else
     {
-        if (xmr_amount > 0 && zero_to_question_mark == true)
+        if (xla_amount > 0 && zero_to_question_mark == true)
         {
-            amount_str = fmt::format(_format, XMR_AMOUNT(xmr_amount));
+            amount_str = fmt::format(_format, XLA_AMOUNT(xla_amount));
         }
     }
 
@@ -381,4 +381,4 @@ make_difficulty(uint64_t low, uint64_t high);
 
 }
 
-#endif //XMREG01_TOOLS_H
+#endif //XLAEG01_TOOLS_H

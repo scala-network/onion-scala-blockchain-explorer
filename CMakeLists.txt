@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 set(PROJECT_NAME
-        xmrblocks)
+        xlablocks)
 
 
 project(${PROJECT_NAME})
@@ -13,33 +13,33 @@ if (WIN32)
 endif()
 
 
-if (NOT MONERO_DIR)
-    set(MONERO_DIR ~/monero)
+if (NOT SCALA_DIR)
+    set(SCALA_DIR ~/scala)
 endif()
 
-message(STATUS MONERO_DIR ": ${MONERO_DIR}")
+message(STATUS SCALA_DIR ": ${SCALA_DIR}")
 
-if (NOT MONERO_SOURCE_DIR)
-    set(MONERO_SOURCE_DIR ${MONERO_DIR}
-          CACHE PATH "Path to the root directory for Monero")
+if (NOT SCALA_SOURCE_DIR)
+    set(SCALA_SOURCE_DIR ${SCALA_DIR}
+          CACHE PATH "Path to the root directory for Scala")
 endif()
 
-if (NOT MONERO_BUILD_DIR)
-    # set location of monero build tree
-    set(MONERO_BUILD_DIR ${MONERO_SOURCE_DIR}/build/release/
-          CACHE PATH "Path to the build directory for Monero")
+if (NOT SCALA_BUILD_DIR)
+    # set location of scala build tree
+    set(SCALA_BUILD_DIR ${SCALA_SOURCE_DIR}/build/release/
+          CACHE PATH "Path to the build directory for Scala")
 
-   if (NOT EXISTS ${MONERO_BUILD_DIR})   
+   if (NOT EXISTS ${SCALA_BUILD_DIR})   
         # try different location   
-        message(STATUS "Trying different folder for monero libraries")
-        set(MONERO_BUILD_DIR ${MONERO_SOURCE_DIR}/build/Linux/master/release/
-            CACHE PATH "Path to the build directory for Monero" FORCE)
+        message(STATUS "Trying different folder for scala libraries")
+        set(SCALA_BUILD_DIR ${SCALA_SOURCE_DIR}/build/Linux/master/release/
+            CACHE PATH "Path to the build directory for Scala" FORCE)
     endif()
 
 endif()
 
-if (NOT EXISTS ${MONERO_BUILD_DIR})   
-  message(FATAL_ERROR "Monero libraries not found in: ${MONERO_BUILD_DIR}")
+if (NOT EXISTS ${SCALA_BUILD_DIR})   
+  message(FATAL_ERROR "Scala libraries not found in: ${SCALA_BUILD_DIR}")
 endif()
 
 set(MY_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake"
@@ -47,12 +47,12 @@ set(MY_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake"
 
 list(APPEND CMAKE_MODULE_PATH "${MY_CMAKE_DIR}")
 
-set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${MONERO_BUILD_DIR}"
-        CACHE PATH "Add Monero directory for library searching")
+set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SCALA_BUILD_DIR}"
+        CACHE PATH "Add Scala directory for library searching")
 
 include(MyUtils)
 
-find_package(Monero)
+find_package(Scala)
 
 # find boost
 find_package(Boost COMPONENTS
@@ -76,7 +76,7 @@ if(APPLE)
     link_directories(/usr/local/lib)
 endif()
 
-MESSAGE(STATUS "Looking for libunbound") # FindUnbound.cmake from monero repo
+MESSAGE(STATUS "Looking for libunbound") # FindUnbound.cmake from scala repo
 
 FIND_PATH(UNBOUND_INCLUDE_DIR
   NAMES unbound.h
@@ -91,7 +91,7 @@ FIND_PATH(UNBOUND_INCLUDE_DIR
 find_library (UNBOUND_LIBRARY unbound)
 if (WIN32 OR (${UNBOUND_LIBRARY} STREQUAL "UNBOUND_LIBRARY-NOTFOUND"))
     add_library(unbound STATIC IMPORTED)
-    set_property(TARGET unbound PROPERTY IMPORTED_LOCATION ${MONERO_BUILD_DIR}/external/unbound/libunbound.a)
+    set_property(TARGET unbound PROPERTY IMPORTED_LOCATION ${SCALA_BUILD_DIR}/external/unbound/libunbound.a)
 endif()
 
 if("${Xmr_WALLET-CRYPTO_LIBRARIES}" STREQUAL "Xmr_WALLET-CRYPTO_LIBRARY-NOTFOUND")
@@ -103,8 +103,8 @@ endif()
 # include boost headers
 include_directories(${Boost_INCLUDE_DIRS})
 
-# include monero
-include_directories(${MONERO_SOURCE_DIR}/build)
+# include scala
+include_directories(${SCALA_SOURCE_DIR}/build)
 
 include_directories("ext/mstch/include")
 include_directories("ext/mstch/include/src")
