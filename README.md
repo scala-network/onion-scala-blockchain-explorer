@@ -1,5 +1,7 @@
 # Onion Scala Blockchain Explorer
 
+Copyright (c) 2017, moneroexamples
+
 Currently available Scala blockchain explorers have several limitations which are of
 special importance to privacy-oriented users:
 
