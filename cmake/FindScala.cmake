@@ -31,7 +31,7 @@
 set(LIBS common;blocks;cryptonote_basic;cryptonote_core;multisig;
 		cryptonote_protocol;daemonizer;mnemonics;epee;lmdb;device;wallet-crypto;
 		blockchain_db;ringct;wallet;cncrypto;easylogging;version;
-        checkpoints;randomx;hardforks;miniupnpc)
+        checkpoints;randomx;hardforks;miniupnpc;felidae;diardi)
 
 set(Xmr_INCLUDE_DIRS "${CPP_SCALA_DIR}")
 
@@ -73,12 +73,14 @@ message(STATUS ${SCALA_SOURCE_DIR}/build)
 # include scala headers
 include_directories(
 		${SCALA_SOURCE_DIR}/src
-                ${SCALA_SOURCE_DIR}/src/crypto
-                ${SCALA_SOURCE_DIR}/src/crypto/wallet
+        ${SCALA_SOURCE_DIR}/src/crypto
+        ${SCALA_SOURCE_DIR}/src/crypto/wallet
 		${SCALA_SOURCE_DIR}/external
 		${SCALA_SOURCE_DIR}/external/randomx/src
 		${SCALA_SOURCE_DIR}/build
 		${SCALA_SOURCE_DIR}/external/easylogging++
 		${SCALA_SOURCE_DIR}/contrib/epee/include
-                ${SCALA_SOURCE_DIR}/external/db_drivers/liblmdb
-                ${SCALA_SOURCE_DIR}/generated_include/crypto/wallet)
+        ${SCALA_SOURCE_DIR}/external/db_drivers/liblmdb
+        ${SCALA_SOURCE_DIR}/generated_include/crypto/wallet
+		${SCALA_SOURCE_DIR}/src/common
+		)

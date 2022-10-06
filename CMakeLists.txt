@@ -151,7 +151,6 @@ set(LIBRARIES
         lmdb
         ringct
         ringct_basic
-        common
         mnemonics
         easylogging
         checkpoints
@@ -161,13 +160,16 @@ set(LIBRARIES
         epee
         hardforks
         randomx
+        diardi
+        felidae
         sodium
         ${Boost_LIBRARIES}
         pthread
         unbound
         curl
         crypto
-        ssl)
+        ssl
+        common)
 
 if(APPLE)
     set(LIBRARIES ${LIBRARIES} "-framework IOKit -framework Foundation")
