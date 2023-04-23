@@ -165,11 +165,11 @@ set(LIBRARIES
         sodium
         ${Boost_LIBRARIES}
         pthread
-        unbound
         curl
         crypto
         ssl
-        common)
+        common
+        unbound)
 
 if(APPLE)
     set(LIBRARIES ${LIBRARIES} "-framework IOKit -framework Foundation")
