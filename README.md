@@ -1,13 +1,11 @@
 # Onion Scala Blockchain Explorer
 
-Copyright (c) 2017, moneroexamples
-
 Currently available Scala blockchain explorers have several limitations which are of
 special importance to privacy-oriented users:
 
  - they use JavaScript,
  - have images which might be used for [cookieless tracking](http://lucb1e.com/rp/cookielesscookies/),
- - track users activates through google analytics,
+ - track users activities through google analytics,
  - are closed sourced,
  - are not available as hidden services,
  - do not support Scala testnet nor stagenet networks,
@@ -26,31 +24,30 @@ Scala C++ libraries, but also demonstrates how to use:
 ## Explorer hosts
 
 Clearnet versions:
- - [https://xlachain.net/](https://xlachain.net/) - https enabled, most popular and very stable.
- - [https://scalahash.com/explorer/](https://scalahash.com/explorer/) - nice looking one, https enabled.
+ - [https://xlachain.net/](https://xlachain.net/) - HTTPS enabled, most popular, and very stable.
+ - [https://scalahash.com/explorer/](https://scalahash.com/explorer/) - nice looking one, HTTPS enabled.
  - [http://scalachain.com/](http://scalachain.com/) - JSON API based, multiple nodes.   
- - [https://blox.minexla.com/](https://blox.minexla.com/) - - https enabled.
- - [https://community.xla.to/explorer/mainnet/](https://community.xla.to/explorer/mainnet/)
+ - [https://blox.minexla.com/](https://blox.minexla.com/) - HTTPS enabled.
 
 Testnet version:
 
  - [https://testnet.xlachain.com/](https://testnet.xlachain.com/) - https enabled.
- - [https://community.xla.to/explorer/testnet/](https://community.xla.to/explorer/testnet/)
 
 Stagenet version:
  
  - [https://stagenet.xlachain.net/](https://stagenet.xlachain.net/)
- - [https://scala-stagenet.exan.tech/](https://scala-stagenet.exan.tech/)
- - [http://162.210.173.150:8083/](http://162.210.173.150:8083/)
- - [https://community.xla.to/explorer/stagenet/](https://community.xla.to/explorer/stagenet/)
 
 i2p users (main Scala network):
 
  - [http://7o4gezpkye6ekibhgpkg7v626ze4idsirapufzrefkdysa6zxhha.b32.i2p/](http://7o4gezpkye6ekibhgpkg7v626ze4idsirapufzrefkdysa6zxhha.b32.i2p/)
 
+Tor versions:
+
+ - [http://exploredv42tq2nowrll6f27nuymenndwupueqvyugaqzbrvmjhhceqd.onion/](http://exploredv42tq2nowrll6f27nuymenndwupueqvyugaqzbrvmjhhceqd.onion/) - Native v3 Onion, JSON API enabled, emission enabled, rawtx enabled.
+
 Alternative block explorers:
 
-- [http://scalablocks.info](http://scalablocks.info/)
+- [https://localscala.co/blocks](https://localscala.co/blocks)
 - [https://scalavision.com](https://scalavision.com)
 
 
@@ -67,7 +64,7 @@ The key features of the Onion Scala Blockchain Explorer are:
  - showing public components of Scala addresses,
  - decoding which outputs and mixins belong to the given Scala address and viewkey,
  - can prove that you send Scala to someone,
- - detailed information about ring members, such as, their age, timescale and their ring sizes,
+ - detailed information about ring members, such as their age, timescale, and ring sizes,
  - showing number of amount output indices,
  - support Scala testnet and stagnet networks,
  - tx checker and pusher for online pushing of transactions,
@@ -75,7 +72,6 @@ The key features of the Onion Scala Blockchain Explorer are:
  - can provide total amount of all miner fees,
  - decoding encrypted payment id,
  - decoding outputs and proving txs sent to sub-address.
- - listing RandomX code for each block
 
 
 ## Development branch
@@ -133,7 +129,7 @@ You can use `-b` option if its in different location.
 For example:
 
 ```bash
-./xlablocks -b /home/mwo/non-defult-scala-location/lmdb/
+./xlablocks -b /home/mwo/non-default-scala-location/lmdb/
 ```
 
 Example output:
@@ -146,6 +142,99 @@ Example output:
 
 Go to your browser: http://127.0.0.1:8081
 
+## Compiling and running with Docker
+
+The explorer can also be compiled using `docker build` as described below. By default it compiles
+against latest release (`release-v0.17`) branch of scala:
+
+```
+# build using all CPU cores
+docker build --no-cache -t xlablocks .
+
+# alternatively, specify number of cores to use (e.g. 2)
+docker build --no-cache --build-arg NPROC=2  -t xlablocks .
+
+# to build against development branch of scala (i.e. master branch)
+docker build --no-cache --build-arg NPROC=3 --build-arg SCALA_BRANCH=master  -t xlablocks .
+```
+
+- The build needs 3 GB space.
+- The final container image is 179MB.
+
+To run it, mount the scala blockchain onto the container as volume.
+
+```
+# either run in foreground
+docker run -it -v <path-to-scala-blockckain-on-the-host>:/home/scala/.bitscala -p 8081:8081  xlablocks
+
+# or in background
+docker run -it -d -v <path-to-scala-blockchain-on-the-host>:/home/scala/.bitscala -p 8081:8081  xlablocks
+```
+
+Example output:
+
+```
+docker run --rm -it -v /mnt/w7/bitscala:/home/scala/.bitscala -p 8081:8081 xlablocks
+Staring in non-ssl mode
+(2020-04-20 16:20:00) [INFO    ] Crow/0.1 server is running at 0.0.0.0:8081 using 1 threads
+```
+
+### Docker Compose example
+
+The explorer can also be built and run using Docker Compose, i.e.:
+
+```yaml
+version: '3'
+services:
+  scalad:
+    image: sethsimmons/simple-scalad:latest
+    restart: unless-stopped
+    container_name: scalad
+    volumes:
+      - xladata:/home/scala/.bitscala
+    ports:
+      - 18080:18080
+      - 18089:18089
+    command:
+      - "--rpc-restricted-bind-ip=0.0.0.0"
+      - "--rpc-restricted-bind-port=18089"
+      - "--public-node"
+      - "--no-igd"
+      - "--enable-dns-blocklist"
+      - "--prune-blockchain"
+
+  explore:
+    image: xlablocks:latest
+    build: ./onion-scala-blockchain-explorer
+    container_name: explore
+    restart: unless-stopped
+    volumes:
+      - xladata:/home/scala/.bitscala
+    ports:
+      - 8081:8081
+    command: ["./xlablocks --daemon-url=scalad:18089 --enable-json-api --enable-autorefresh-option --enable-emission-monitor --enable-pusher"]
+
+  volumes:
+    xladata:
+```
+
+To build this image, run the following:
+
+```bash
+git clone https://github.com/scalaexamples/onion-scala-blockchain-explorer.git
+docker-compose build
+```
+
+Or build and run in one step via:
+
+```bash
+git clone https://github.com/scalaexamples/onion-scala-blockchain-explorer.git
+docker-compose up -d
+```
+
+When running via Docker, please use something like [Traefik](https://doc.traefik.io/traefik/) or [enable SSL](#enable-ssl-https) to secure communications.
+
+
 ## The explorer's command line options
 
 ```
@@ -154,7 +243,6 @@ xlablocks, Onion Scala Blockchain Explorer:
   -t [ --testnet ] [=arg(=1)] (=0)      use testnet blockchain
   -s [ --stagenet ] [=arg(=1)] (=0)     use stagenet blockchain
   --enable-pusher [=arg(=1)] (=0)       enable signed transaction pusher
-  --enable-randomx [=arg(=1)] (=0)      enable generation of randomx code
   --enable-mixin-details [=arg(=1)] (=0)
                                         enable mixin details for key images,
                                         e.g., timescale, mixin of mixins, in tx
@@ -198,10 +286,11 @@ xlablocks, Onion Scala Blockchain Explorer:
                                         functionality
   --ssl-key-file arg                    path to key file for ssl (https)
                                         functionality
-  -d [ --deamon-url ] arg (=http:://127.0.0.1:18081)
+  -d [ --daemon-url ] arg (=http:://127.0.0.1:18081)
                                         Scala daemon url
   --daemon-login arg                    Specify username[:password] for daemon 
                                         RPC client
+  --enable-mixin-guess [=arg(=1)] (=0)  enable guessing real outputs in key
 ```
 
 Example usage, defined as bash aliases.
@@ -213,6 +302,18 @@ alias xlablocksmainnet='~/onion-scala-blockchain-explorer/build/xlablocks    --p
 # for testnet explorer
 alias xlablockstestnet='~/onion-scala-blockchain-explorer/build/xlablocks -t --port 8082 --mainnet-url "http://139.162.32.245:8081" --enable-pusher --enable-emission-monitor'
 ```
+
+Example usage when running via Docker:
+
+```bash
+# Run in foreground
+docker run -it -v <path-to-scala-blockckain-on-the-host>:/home/scala/.bitscala -p 8081:8081  xlablocks "./xlablocks --daemon-url=node.sethforprivacy.com:18089 --enable-json-api --enable-autorefresh-option --enable-emission-monitor --enable-pusher"
+
+# Run in background
+docker run -it -d -v <path-to-scala-blockchain-on-the-host>:/home/scala/.bitscala -p 8081:8081  xlablocks "./xlablocks --daemon-url=node.sethforprivacy.com:18089 --enable-json-api --enable-autorefresh-option --enable-emission-monitor --enable-pusher"
+```
+
+Make sure to always start the portion of command line flags with `./xlablocks` and set any flags you would like after that, as shown above.
 
 ## Enable Scala emission
 
@@ -233,9 +334,9 @@ Every 10000 blocks, the thread will save current emission in a file, by default,
  need to rescan entire blockchain whenever the explorer is restarted. When the
  explorer restarts, the thread will first check if `~/.bitscala/lmdb/emission_amount.txt`
  is present, read its values, and continue from there if possible. Subsequently, only the initial
- use of the tread is time consuming. Once the thread scans the entire blockchain, it updates
+ use of the thread is time consuming. Once the thread scans the entire blockchain, it updates
  the emission amount using new blocks as they come. Since the explorer writes this file, there can
- be only one instance of it running for mainnet, testnet and stagenet. Thus, for example, you cant have
+ be only one instance of it running for mainnet, testnet and stagenet. Thus, for example, you can't have
  two explorers for mainnet
  running at the same time, as they will be trying to write and read the same file at the same time,
  leading to unexpected results. Off course having one instance for mainnet and one instance for testnet
@@ -273,7 +374,7 @@ Having the `crt` and `key` files, run `xlablocks` in the following way:
 ```
 
 Note: Because we generated our own certificate, modern browsers will complain
-about it as they cant verify the signatures against any third party. So probably
+about it as they can't verify the signatures against any third party. So probably
 for any practical use need to have properly issued ssl certificates.
 
 ## JSON API
@@ -298,8 +399,8 @@ Partial results shown:
   "data": {
     "block_height": 1268252,
     "coinbase": false,
-    "confirmations": 1,
-    "current_height": 1268253,
+    "confirmations": 1057855,
+    "current_height": 2326107,
     "extra": "01be23e277aed6b5f41f66b05244bf994c13108347366ec678ae16657f0fc3a22b",
     "inputs": [
       {
@@ -308,11 +409,13 @@ Partial results shown:
         "mixins": [
           {
             "block_no": 1238623,
-            "public_key": "0a5b853c55303c10e1326acfb085b9e246e088b1ccac7e37f7a810d46a28a914"
+            "public_key": "0a5b853c55303c10e1326acfb085b9e246e088b1ccac7e37f7a810d46a28a914",
+            "tx_hash": "686555fb053dd53f6f9eb79449e2bdcd377221f823f508158d70d4a1966fe955"
           },
           {
             "block_no": 1246942,
-            "public_key": "527cf86f5abbfb006c970f7c6eb40493786d4751306f8985c6a43f98a88c0dff"
+            "public_key": "527cf86f5abbfb006c970f7c6eb40493786d4751306f8985c6a43f98a88c0dff",
+            "tx_hash": "4fa1999f9e0d2ad031dbe5594f2e8336651b6cad19dd3cee7980a01c47600f91"
           }
         ]
       }
@@ -342,6 +445,7 @@ Partial results shown:
   },
   "status": "success"
 }
+
 ```
 
 #### api/transactions

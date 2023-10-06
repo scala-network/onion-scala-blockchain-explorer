@@ -71,8 +71,10 @@ namespace xlaeg
                  "path to key file for ssl (https) functionality")
                 ("daemon-login", value<string>(),
                  "Specify username[:password] for daemon RPC client")
-                ("deamon-url,d", value<string>()->default_value("http:://127.0.0.1:18081"),
-                 "Scala daemon url");
+                ("daemon-url,d", value<string>()->default_value("127.0.0.1:18081"),
+                 "Scala daemon url")
+                ("enable-mixin-guess", value<bool>()->default_value(false)->implicit_value(true),
+                 "enable guessing real outputs in key images based on viewkey");
 
 
         store(command_line_parser(acc, avv)

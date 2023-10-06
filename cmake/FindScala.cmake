@@ -30,8 +30,8 @@
 
 set(LIBS common;blocks;cryptonote_basic;cryptonote_core;multisig;
 		cryptonote_protocol;daemonizer;mnemonics;epee;lmdb;device;wallet-crypto;
-		blockchain_db;ringct;wallet;cncrypto;easylogging;version;
-        checkpoints;randomx;hardforks;miniupnpc;felidae;diardi)
+		blockchain_db;ringct;wallet;felidae;cncrypto;easylogging;version;
+        checkpoints;randomx;hardforks;miniupnpc)
 
 set(Xmr_INCLUDE_DIRS "${CPP_SCALA_DIR}")
 
@@ -67,12 +67,20 @@ if (EXISTS ${SCALA_BUILD_DIR}/src/ringct/libringct_basic.a)
 			PROPERTY IMPORTED_LOCATION ${SCALA_BUILD_DIR}/src/ringct/libringct_basic.a)
 endif()
 
+if (EXISTS ${SCALA_BUILD_DIR}/src/cryptonote_basic/libcryptonote_format_utils_basic.a)
+        message(STATUS FindScala " found libcryptonote_format_utils_basic.a")
+        add_library(cryptonote_format_utils_basic STATIC IMPORTED)
+        set_property(TARGET cryptonote_format_utils_basic
+                PROPERTY IMPORTED_LOCATION ${SCALA_BUILD_DIR}/src/cryptonote_basic/libcryptonote_format_utils_basic.a)
+endif()
+
 
 message(STATUS ${SCALA_SOURCE_DIR}/build)
 
 # include scala headers
 include_directories(
 		${SCALA_SOURCE_DIR}/src
+		${SCALA_SOURCE_DIR}/external/felidae/src
         ${SCALA_SOURCE_DIR}/src/crypto
         ${SCALA_SOURCE_DIR}/src/crypto/wallet
 		${SCALA_SOURCE_DIR}/external
@@ -81,6 +89,4 @@ include_directories(
 		${SCALA_SOURCE_DIR}/external/easylogging++
 		${SCALA_SOURCE_DIR}/contrib/epee/include
         ${SCALA_SOURCE_DIR}/external/db_drivers/liblmdb
-        ${SCALA_SOURCE_DIR}/generated_include/crypto/wallet
-		${SCALA_SOURCE_DIR}/src/common
-		)
+        ${SCALA_SOURCE_DIR}/generated_include/crypto/wallet)

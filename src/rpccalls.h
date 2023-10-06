@@ -69,7 +69,7 @@ using namespace std;
 
 class rpccalls
 {
-    string deamon_url ;
+    string daemon_url ;
     uint64_t timeout_time;
 
     std::chrono::milliseconds timeout_time_ms;
@@ -77,6 +77,7 @@ class rpccalls
     epee::net_utils::http::url_content url;
 
     epee::net_utils::http::http_simple_client m_http_client;
+
     std::mutex m_daemon_rpc_mutex;
 
     string port;
@@ -85,12 +86,12 @@ public:
 
     using login_opt = boost::optional<epee::net_utils::http::login>;
 
-    rpccalls(string _deamon_url = "http:://127.0.0.1:18081",
+    rpccalls(string _daemon_url = "http:://127.0.0.1:18081",
              login_opt _login = login_opt {},
              uint64_t _timeout = 200000);
 
     bool
-    connect_to_scala_deamon();
+    connect_to_scala_daemon();
 
     uint64_t
     get_current_height();
@@ -103,6 +104,9 @@ public:
 
     bool
     get_network_info(COMMAND_RPC_GET_INFO::response& info);
+
+    bool
+    get_base_fee_estimate(uint64_t grace_blocks, uint64_t& fee_estimate);
 
     bool
     get_hardfork_info( COMMAND_RPC_HARD_FORK_INFO::response& res);
@@ -135,9 +139,9 @@ public:
         {
             std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
-            if (!connect_to_scala_deamon())
+            if (!connect_to_scala_daemon())
             {
-                cerr << "get_alt_blocks: not connected to deamon" << endl;
+                cerr << "get_alt_blocks: not connected to daemon" << endl;
                 return false;
             }
 
@@ -161,15 +165,15 @@ public:
 
             if (!err.empty())
             {
-                cerr << "Error connecting to Scala deamon due to "
+                cerr << "Error connecting to Scala daemon due to "
                      << err << endl;
                 return false;
             }
         }
         else
         {
-            cerr << "Error connecting to Scala deamon at "
-                 << deamon_url << endl;
+            cerr << "Error connecting to Scala daemon at "
+                 << daemon_url << endl;
             return false;
         }
 

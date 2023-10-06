@@ -96,7 +96,7 @@ MempoolStatus::start_mempool_status_thread()
 bool
 MempoolStatus::read_mempool()
 {
-    rpccalls rpc {deamon_url, login};
+    rpccalls rpc {daemon_url, login};
 
     string error_msg;
 
@@ -170,7 +170,7 @@ MempoolStatus::read_mempool()
         vector<txin_to_key> input_key_imgs;
 
         // public keys and xla amount of outputs
-        vector<pair<txout_to_key, uint64_t>> output_pub_keys;
+        vector<output_tuple_with_tag> output_pub_keys;
 
         // sum xla in inputs and ouputs in the given tx
         const array<uint64_t, 4>& sum_data = summary_of_in_out_rct(
@@ -222,12 +222,15 @@ MempoolStatus::read_mempool()
 bool
 MempoolStatus::read_network_info()
 {
-    rpccalls rpc {deamon_url, login};
+    rpccalls rpc {daemon_url, login};
 
     COMMAND_RPC_GET_INFO::response rpc_network_info;
 
     if (!rpc.get_network_info(rpc_network_info))
+    {
+        cerr << "rpc.get_network_info(rpc_network_info) failed";
         return false;
+     }
 
     uint64_t fee_estimated;
 
@@ -326,7 +329,7 @@ MempoolStatus::is_thread_running()
 }
 
 bf::path MempoolStatus::blockchain_path {"/home/mwo/.bitscala/lmdb"};
-string MempoolStatus::deamon_url {"http:://127.0.0.1:18081"};
+string MempoolStatus::daemon_url {"http:://127.0.0.1:18081"};
 cryptonote::network_type MempoolStatus::nettype {cryptonote::network_type::MAINNET};
 atomic<bool>       MempoolStatus::is_running {false};
 boost::thread      MempoolStatus::m_thread;

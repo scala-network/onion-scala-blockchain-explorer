@@ -9,26 +9,26 @@ namespace xlaeg
 
 
 rpccalls::rpccalls(
-         string _deamon_url,
+         string _daemon_url,
          login_opt login,
          uint64_t _timeout)
-        : deamon_url {_deamon_url},
+        : daemon_url {_daemon_url},
           timeout_time {_timeout}
 {
-    epee::net_utils::parse_url(deamon_url, url);
+    epee::net_utils::parse_url(daemon_url, url);
 
     port = std::to_string(url.port);
 
     timeout_time_ms = std::chrono::milliseconds {timeout_time};    
 
-     m_http_client.set_server(
-             deamon_url,
+    m_http_client.set_server(
+             daemon_url,
              login,
              epee::net_utils::ssl_support_t::e_ssl_support_disabled);
 }
 
 bool
-rpccalls::connect_to_scala_deamon()
+rpccalls::connect_to_scala_daemon()
 {
     //std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
@@ -40,6 +40,33 @@ rpccalls::connect_to_scala_deamon()
     return m_http_client.connect(timeout_time_ms);
 }
 
+
+bool
+rpccalls::get_base_fee_estimate(uint64_t grace_blocks,
+                                uint64_t& fee_estimate) {
+
+    cryptonote::COMMAND_RPC_GET_BASE_FEE_ESTIMATE::request req;
+    cryptonote::COMMAND_RPC_GET_BASE_FEE_ESTIMATE::response res;
+
+    req.grace_blocks = grace_blocks;
+
+    if (!connect_to_scala_daemon())
+    {
+        cerr << "get_base_fee_estimate: not connected to daemon" << endl;
+        return false;
+    }
+
+    bool r = epee::net_utils::invoke_http_json(
+            "/get_fee_estimate",
+            req, res, m_http_client, timeout_time_ms);
+
+    fee_estimate = res.fee;
+
+    return r;
+
+
+}
+
 uint64_t
 rpccalls::get_current_height()
 {
@@ -48,9 +75,9 @@ rpccalls::get_current_height()
 
     std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
-    if (!connect_to_scala_deamon())
+    if (!connect_to_scala_daemon())
     {
-        cerr << "get_current_height: not connected to deamon" << endl;
+        cerr << "get_current_height: not connected to daemon" << endl;
         return false;
     }
 
@@ -60,8 +87,8 @@ rpccalls::get_current_height()
 
     if (!r)
     {
-        cerr << "Error connecting to Scala deamon at "
-             << deamon_url << endl;
+        cerr << "Error connecting to Scala daemon at "
+             << daemon_url << endl;
         return 0;
     }
 
@@ -80,9 +107,9 @@ rpccalls::get_mempool(vector<tx_info>& mempool_txs)
     {
         std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
-        if (!connect_to_scala_deamon())
+        if (!connect_to_scala_daemon())
         {
-            cerr << "get_mempool: not connected to deamon" << endl;
+            cerr << "get_mempool: not connected to daemon" << endl;
             return false;
         }
 
@@ -93,8 +120,8 @@ rpccalls::get_mempool(vector<tx_info>& mempool_txs)
 
     if (!r || res.status != CORE_RPC_STATUS_OK)
     {
-        cerr << "Error connecting to Scala deamon at "
-             << deamon_url << endl;
+        cerr << "Error connecting to Scala daemon at "
+             << daemon_url << endl;
         return false;
     }
 
@@ -127,9 +154,9 @@ rpccalls::commit_tx(tools::wallet2::pending_tx& ptx, string& error_msg)
 
     std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
-    if (!connect_to_scala_deamon())
+    if (!connect_to_scala_daemon())
     {
-        cerr << "commit_tx: not connected to deamon" << endl;
+        cerr << "commit_tx: not connected to daemon" << endl;
         return false;
     }
 
@@ -166,9 +193,9 @@ rpccalls::get_network_info(COMMAND_RPC_GET_INFO::response& response)
     {
         std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
-        if (!connect_to_scala_deamon())
+        if (!connect_to_scala_daemon())
         {
-            cerr << "get_network_info: not connected to deamon" << endl;
+            cerr << "get_network_info: not connected to daemon" << endl;
             return false;
         }
 
@@ -183,7 +210,7 @@ rpccalls::get_network_info(COMMAND_RPC_GET_INFO::response& response)
     {
         if (resp_t.result.status == CORE_RPC_STATUS_BUSY)
         {
-            err = "daemon is busy. Please try again later.";
+            err = "Daemon is busy. Please try again later.";
         }
         else if (resp_t.result.status != CORE_RPC_STATUS_OK)
         {
@@ -192,15 +219,15 @@ rpccalls::get_network_info(COMMAND_RPC_GET_INFO::response& response)
 
         if (!err.empty())
         {
-            cerr << "Error connecting to Scala deamon due to "
+            cerr << "Error connecting to Scala daemon due to "
                  << err << endl;
             return false;
         }
     }
     else
     {
-        cerr << "Error connecting to Scala deamon at "
-             << deamon_url << endl;
+        cerr << "Error connecting to Scala daemon at "
+             << daemon_url << endl;
         return false;
     }
 
@@ -226,9 +253,9 @@ rpccalls::get_hardfork_info(COMMAND_RPC_HARD_FORK_INFO::response& response)
     {
         std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
-        if (!connect_to_scala_deamon())
+        if (!connect_to_scala_daemon())
         {
-            cerr << "get_hardfork_info: not connected to deamon" << endl;
+            cerr << "get_hardfork_info: not connected to daemon" << endl;
             return false;
         }
 
@@ -253,15 +280,15 @@ rpccalls::get_hardfork_info(COMMAND_RPC_HARD_FORK_INFO::response& response)
 
         if (!err.empty())
         {
-            cerr << "Error connecting to Scala deamon due to "
+            cerr << "Error connecting to Scala daemon due to "
                  << err << endl;
             return false;
         }
     }
     else
     {
-        cerr << "Error connecting to Scala deamon at "
-             << deamon_url << endl;
+        cerr << "Error connecting to Scala daemon at "
+             << daemon_url << endl;
         return false;
     }
 
@@ -294,9 +321,9 @@ rpccalls::get_dynamic_per_kb_fee_estimate(
     {
         std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
-        if (!connect_to_scala_deamon())
+        if (!connect_to_scala_daemon())
         {
-            cerr << "get_dynamic_per_kb_fee_estimate: not connected to deamon" << endl;
+            cerr << "get_dynamic_per_kb_fee_estimate: not connected to daemon" << endl;
             return false;
         }
 
@@ -321,15 +348,15 @@ rpccalls::get_dynamic_per_kb_fee_estimate(
 
         if (!err.empty())
         {
-            cerr << "Error connecting to Scala deamon due to "
+            cerr << "Error connecting to Scala daemon due to "
                  << err << endl;
             return false;
         }
     }
     else
     {
-        cerr << "Error connecting to Scala deamon at "
-             << deamon_url << endl;
+        cerr << "Error connecting to Scala daemon at "
+             << daemon_url << endl;
         return false;
     }
 
@@ -357,9 +384,9 @@ rpccalls::get_block(string const& blk_hash, block& blk, string& error_msg)
     {
         std::lock_guard<std::mutex> guard(m_daemon_rpc_mutex);
 
-        if (!connect_to_scala_deamon())
+        if (!connect_to_scala_daemon())
         {
-            cerr << "get_block: not connected to deamon" << endl;
+            cerr << "get_block: not connected to daemon" << endl;
             return false;
         }
 
@@ -384,15 +411,15 @@ rpccalls::get_block(string const& blk_hash, block& blk, string& error_msg)
 
         if (!err.empty())
         {
-            cerr << "Error connecting to Scala deamon due to "
+            cerr << "Error connecting to Scala daemon due to "
                  << err << endl;
             return false;
         }
     }
     else
     {
-        cerr << "get_block: error connecting to Scala deamon at "
-             << deamon_url << endl;
+        cerr << "get_block: error connecting to Scala daemon at "
+             << daemon_url << endl;
         return false;
     }
 

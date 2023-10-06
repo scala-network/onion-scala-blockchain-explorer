@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0.2)
 
 set(PROJECT_NAME
         xlablocks)
@@ -49,7 +49,6 @@ list(APPEND CMAKE_MODULE_PATH "${MY_CMAKE_DIR}")
 
 set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${SCALA_BUILD_DIR}"
         CACHE PATH "Add Scala directory for library searching")
-
 include(MyUtils)
 
 find_package(Scala)
@@ -139,37 +138,37 @@ set(LIBRARIES
         myext
         mstch
         wallet
+        cryptonote_core
+        cryptonote_basic
+        cryptonote_protocol
+        cryptonote_format_utils_basic
         blockchain_db
         device
-        ${WALLET_CRYPTO}
-        cryptonote_core
-        cryptonote_protocol
-        cryptonote_basic
+        ${WALLET_CRYPTO} 
         multisig
         daemonizer
         blocks
         lmdb
         ringct
         ringct_basic
+        common
         mnemonics
         easylogging
         checkpoints
-        cncrypto        
+        cncrypto
         miniupnpc
         version
         epee
         hardforks
         randomx
-        diardi
         felidae
         sodium
         ${Boost_LIBRARIES}
         pthread
+        unbound
         curl
         crypto
-        ssl
-        common
-        unbound)
+        ssl)
 
 if(APPLE)
     set(LIBRARIES ${LIBRARIES} "-framework IOKit -framework Foundation")

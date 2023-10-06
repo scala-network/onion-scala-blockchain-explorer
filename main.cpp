@@ -1,9 +1,9 @@
 #define CROW_ENABLE_SSL
-
+#define CROW_MAIN
 
 #include "src/page.h"
 
-#include "ext/crow/crow.h"
+#include "ext/crow_all.h"
 #include "src/CmdLineOptions.h"
 #include "src/MicroCore.h"
 
@@ -56,7 +56,7 @@ main(int ac, const char* av[])
     auto port_opt                      = opts.get_option<string>("port");
     auto bindaddr_opt                  = opts.get_option<string>("bindaddr");
     auto bc_path_opt                   = opts.get_option<string>("bc-path");
-    auto deamon_url_opt                = opts.get_option<string>("deamon-url");
+    auto daemon_url_opt                = opts.get_option<string>("daemon-url");
     auto ssl_crt_file_opt              = opts.get_option<string>("ssl-crt-file");
     auto ssl_key_file_opt              = opts.get_option<string>("ssl-key-file");
     auto no_blocks_on_index_opt        = opts.get_option<string>("no-blocks-on-index");
@@ -76,6 +76,7 @@ main(int ac, const char* av[])
     auto enable_mixin_details_opt      = opts.get_option<bool>("enable-mixin-details");
     auto enable_json_api_opt           = opts.get_option<bool>("enable-json-api");
     auto enable_as_hex_opt             = opts.get_option<bool>("enable-as-hex");
+    auto enable_mixin_guess_opt        = opts.get_option<bool>("enable-mixin-guess");
     auto concurrency_opt               = opts.get_option<size_t>("concurrency");
     auto enable_emission_monitor_opt   = opts.get_option<bool>("enable-emission-monitor");
 
@@ -99,10 +100,16 @@ main(int ac, const char* av[])
     bool enable_autorefresh_option    {*enable_autorefresh_option_opt};
     bool enable_output_key_checker    {*enable_output_key_checker_opt};
     bool enable_mixin_details         {*enable_mixin_details_opt};
+    bool enable_mixin_guess           {*enable_mixin_guess_opt};
     bool enable_json_api              {*enable_json_api_opt};
     bool enable_as_hex                {*enable_as_hex_opt};
     bool enable_emission_monitor      {*enable_emission_monitor_opt};
 
+    //temprorary disable randomx
+    if (enable_randomx == true) {
+        cout << "Support for randomx code is disabled due to issues with it"<< endl;
+        enable_randomx = false;
+    }
 
     // set  scala log output level
     uint32_t log_level = 0;
@@ -205,13 +212,13 @@ main(int ac, const char* av[])
         return EXIT_FAILURE;
     }
 
-    string deamon_url {*deamon_url_opt};
+    string daemon_url {*daemon_url_opt};
 
-    if (testnet && deamon_url == "http:://127.0.0.1:18081")
-        deamon_url = "http:://127.0.0.1:28081";
-    if (stagenet && deamon_url == "http:://127.0.0.1:18081")
-        deamon_url = "http:://127.0.0.1:38081";
-
+    if (testnet && daemon_url == "127.0.0.1:18081")
+        daemon_url = "127.0.0.1:28081";
+    if (stagenet && daemon_url == "127.0.0.1:18081")
+        daemon_url = "127.0.0.1:38081";
+        
     uint64_t mempool_info_timeout {5000};
 
     try
@@ -247,8 +254,8 @@ main(int ac, const char* av[])
                 = blockchain_path;
         xlaeg::CurrentBlockchainStatus::nettype
                 = nettype;
-        xlaeg::CurrentBlockchainStatus::deamon_url
-                = deamon_url;
+        xlaeg::CurrentBlockchainStatus::daemon_url
+                = daemon_url;
         xlaeg::CurrentBlockchainStatus::set_blockchain_variables(
                 &mcore, core_storage);
 
@@ -264,8 +271,8 @@ main(int ac, const char* av[])
             = blockchain_path;
     xlaeg::MempoolStatus::nettype
             = nettype;
-    xlaeg::MempoolStatus::deamon_url
-            = deamon_url;
+    xlaeg::MempoolStatus::daemon_url
+            = daemon_url;
     xlaeg::MempoolStatus::login
             = daemon_rpc_login;
     xlaeg::MempoolStatus::set_blockchain_variables(
@@ -299,7 +306,7 @@ main(int ac, const char* av[])
     // contains logic for the website
     xlaeg::page xlablocks(&mcore,
                           core_storage,
-                          deamon_url,
+                          daemon_url,
                           nettype,
                           enable_pusher,
                           enable_randomx,
@@ -308,6 +315,7 @@ main(int ac, const char* av[])
                           enable_output_key_checker,
                           enable_autorefresh_option,
                           enable_mixin_details,
+                          enable_mixin_guess,
                           no_blocks_on_index,
                           mempool_info_timeout,
                           *testnet_url,
